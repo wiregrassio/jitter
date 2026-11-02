@@ -1,0 +1,4 @@
+nr_free_pages 2383077
+pgfault 112983651
+pgmajfault 4127
+pgrefill 0

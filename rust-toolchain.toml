@@ -1,0 +1,5 @@
+# Pinned so CI, the lab, and the Graviton reference runs build with one compiler. Bump on purpose.
+[toolchain]
+channel = "1.99.1"
+components = ["clippy", "rustfmt"]
+targets = ["x86_64-unknown-linux-gnu", "aarch64-unknown-linux-gnu"]

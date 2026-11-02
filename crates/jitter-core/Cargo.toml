@@ -1,0 +1,14 @@
+[package]
+name = "jitter-core"
+description = "Pure core of Jitter: kernel text parsers, window reduction, line-protocol serializer."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+# No dependencies, by design: everything here is a pure function of its input.
+[dependencies]
+
+[lints]
+workspace = true

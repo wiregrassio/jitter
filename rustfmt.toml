@@ -1,0 +1,2 @@
+# Defaults, pinned: `cargo fmt --all -- --check` is a CI gate.
+edition = "2024"

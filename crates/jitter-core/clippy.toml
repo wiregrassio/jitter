@@ -1,0 +1,12 @@
+# The determinism boundary, enforced: the core never touches files, clocks, or the network.
+disallowed-methods = [
+    { path = "std::fs::read", reason = "jitter-core is pure; the daemon reads files" },
+    { path = "std::fs::read_to_string", reason = "jitter-core is pure; the daemon reads files" },
+    { path = "std::fs::File::open", reason = "jitter-core is pure; the daemon reads files" },
+    { path = "std::time::Instant::now", reason = "jitter-core is pure; time is passed in" },
+    { path = "std::time::SystemTime::now", reason = "jitter-core is pure; time is passed in" },
+    { path = "std::env::var", reason = "jitter-core is pure; configuration is passed in" },
+]
+disallowed-types = [
+    { path = "std::net::TcpStream", reason = "jitter-core is pure; the sink owns the network" },
+]

@@ -1,0 +1,77 @@
+# Jitter configuration. Every key is required; there are no defaults. Values starting with
+# SENTINEL are placeholders and are refused at startup. `jitter check <file>` validates this
+# file and opens every source without collecting.
+
+[identity]
+# The `host` tag on every record.
+host = "SENTINEL_SET_HOST"
+
+[paths]
+# procfs and sysfs roots. In a container, bind-mount the host's and point these at them.
+proc = "/proc"
+sys = "/sys"
+
+[window]
+# Each stream is reduced once per window. Windows close on wall-clock second boundaries.
+seconds = 1
+
+[driver]
+# Timer slack for the sampling thread, in nanoseconds. The kernel default is 50000.
+timer_slack_ns = 1000
+
+[collectors.cpu]
+enabled = true
+# /proc/stat counts in USER_HZ ticks (100 per second), so at most USER_HZ / 10 = 10 Hz.
+sample_hz = 10
+
+[collectors.sched]
+enabled = true
+sample_hz = 100
+
+[collectors.memory]
+enabled = true
+sample_hz = 10
+
+[collectors.pressure]
+# Needs CONFIG_PSI. Refuses to start without it.
+enabled = true
+sample_hz = 10
+
+[collectors.network]
+enabled = true
+sample_hz = 10
+interfaces = ["SENTINEL_SET_INTERFACE"]
+
+[collectors.disk]
+enabled = true
+sample_hz = 10
+devices = ["SENTINEL_SET_DEVICE"]
+mounts = ["/"]
+
+[collectors.thermal]
+# Most cloud VMs expose no thermal zones. List zone `type` names to enable.
+enabled = false
+sample_hz = 10
+zones = []
+
+[collectors.timesync]
+enabled = true
+sample_hz = 1
+
+[collectors.self]
+enabled = true
+
+[sink]
+# "influxdb" or "stdout". With "stdout", remove the [sink.influxdb] table.
+kind = "influxdb"
+# Windows that may wait for the store before new ones are dropped and counted.
+queue_windows = 8
+
+[sink.influxdb]
+url = "http://127.0.0.1:8086"
+org = "SENTINEL_SET_ORG"
+bucket = "SENTINEL_SET_BUCKET"
+token_env = "JITTER_INFLUXDB_TOKEN"
+timeout_ms = 2000
+max_attempts = 3
+retry_delay_ms = 250
